@@ -1,0 +1,30 @@
+{
+  "name": "minha-meta-api",
+  "version": "1.0.0",
+  "description": "MinhaMeta API - part of Monthly Cost Board webapp",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "build": "sucrase ./src -d ./outDir --transform imports"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/acidbutter96/minha-meta-api.git"
+  },
+  "keywords": [
+    "byefive"
+  ],
+  "author": "Marcos Pereira",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/acidbutter96/minha-meta-api/issues"
+  },
+  "homepage": "https://github.com/acidbutter96/minha-meta-api#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7",
+    "sucrase": "^3.17.1"
+  }
+}
