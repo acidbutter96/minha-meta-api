@@ -2,6 +2,8 @@ import express from 'express';
 import { next } from 'sucrase/dist/parser/tokenizer';
 import routes from './routes';
 
+import './config/dbconnect';
+
 class App {
     constructor() {
         this.app = express();
