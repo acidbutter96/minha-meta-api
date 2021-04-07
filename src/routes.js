@@ -9,7 +9,7 @@ import AuthMiddleware from './app/middlewares/auth';
 
 const routes = new Router();
 
-routes.get('/v1/session', SessionController.create);
+routes.post('/v1/session', SessionController.create);
 
 routes.get('/v1/vendor/:id', AuthMiddleware, VendorController.show);
 routes.get('/v1/vendors', AuthMiddleware, VendorController.index);
