@@ -3,7 +3,6 @@ import Vendor from '../models/Vendor';
 import * as Yup from 'yup';
 import bcrypt from 'bcryptjs';
 import { cpf } from 'cpf-cnpj-validator';
-import { parse, isDate } from "date-fns";
 
 class VendorController {
     async show(req, res) {
@@ -19,8 +18,6 @@ class VendorController {
                 message: `Nenhum registro retomado\n${err}`
             });
         });
-
-        return res.status(200).send(`vendor show ${req.params.id}`)
     }
 
     async index(req, res) {
@@ -119,16 +116,13 @@ class VendorController {
         const schema = Yup.object().shape({
             _id: Yup.string()
                 .required(),
-            name: Yup.string()
-                .required(),
             oldpassword: Yup.string()
                 .required(),
+            name: Yup.string(),
             password: Yup.string(),
             email: Yup.string()
-                .email()
-                .required(),
+                .email(),
             remuneration: Yup.number()
-                .required(),
         })
 
         if (!(await schema.isValid(req.body))) {
@@ -139,7 +133,7 @@ class VendorController {
             });
         }
 
-        const { _id, name, email, remuneration } = req.body;
+        const { _id, name, email, remuneration, password, oldpassword } = req.body;
 
         const vendorExists = await Vendor.findOne({
             _id: _id
@@ -177,7 +171,7 @@ class VendorController {
             return res.status(403).json({
                 error: true,
                 code: 115,
-                message: 'Senha antiga incorreta'
+                message: 'Senha inválida'
             });
         } else {
             await Vendor.updateOne({ _id: _id }, data, (err) => {
@@ -190,7 +184,7 @@ class VendorController {
                 } else {
                     return res.json({
                         error: false,
-                        message: 'Perfil editado com sucesso'
+                        message: 'Vendedor editado com sucesso'
                     });
                 }
             });

@@ -19,7 +19,7 @@ routes.put('/v1/vendors', AuthMiddleware, VendorController.update);
 
 routes.get('/v1/goal/:id', AuthMiddleware, MonthlyGoalController.show);
 routes.get('/v1/goals', AuthMiddleware, MonthlyGoalController.index);
-routes.post('/v1/goals', AuthMiddleware, MonthlyGoalController.store);
+routes.post('/v1/goals', MonthlyGoalController.store);
 routes.put('/v1/goals', AuthMiddleware, MonthlyGoalController.update);
 routes.delete('/v1/goal/', AuthMiddleware, MonthlyGoalController.destroy);
 

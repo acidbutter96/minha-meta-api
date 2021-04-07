@@ -12,7 +12,6 @@ const MonthlyGoal = new mongoose.Schema({
     },
     real_value: {
         type: Number,
-        required: true
     },
     date: {
         type: Date,
@@ -26,8 +25,8 @@ const MonthlyGoal = new mongoose.Schema({
         type: String,
         required: true
     },
-    daily_sale: {
-        type: Object,
+    daily_sales: {
+        type: Array,
         required: true
     }
 }, {
