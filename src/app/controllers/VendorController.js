@@ -23,8 +23,27 @@ class VendorController {
         return res.status(200).send(`vendor show ${req.params.id}`)
     }
 
-    index(req, res) {
-        return res.status(200).send('vendors index');
+    async index(req, res) {
+        const { page = 1 } = req.query;
+        const { limit = 40 } = req.query;
+
+        await Vendor.paginate({},
+            {
+                select: 'name email birthday document remuneration createdAt updatedAt',
+                page,
+                limit
+            }).then((data) => {
+                return res.json({
+                    error: false,
+                    data
+                });
+            }).catch((err) => {
+                return res.status(400).json({
+                    error: true,
+                    code: 111,
+                    message: `Não foi possível processar a solicitação.\nError: ${err}`
+                });
+            });
     }
 
     async store(req, res) {
@@ -96,8 +115,87 @@ class VendorController {
         });
     }
 
-    update(req, res) {
-        return res.status(200).send('vendor update');
+    async update(req, res) {
+        const schema = Yup.object().shape({
+            _id: Yup.string()
+                .required(),
+            name: Yup.string()
+                .required(),
+            oldpassword: Yup.string()
+                .required(),
+            password: Yup.string(),
+            email: Yup.string()
+                .email()
+                .required(),
+            remuneration: Yup.number()
+                .required(),
+        })
+
+        if (!(await schema.isValid(req.body))) {
+            return res.status(400).json({
+                error: true,
+                code: 112,
+                message: 'Verifique os dados informados'
+            });
+        }
+
+        const { _id, name, email, remuneration } = req.body;
+
+        const vendorExists = await Vendor.findOne({
+            _id: _id
+        });
+
+        if (!vendorExists) {
+            return res.status(400).json({
+                error: true,
+                code: 113,
+                message: 'Vendedor não encontrado'
+            });
+        }
+
+        var data = {};
+
+        if (name) data.name = name;
+        if (remuneration) data.remuneration = remuneration;
+        if (password) data.password = await bcrypt.hash(password, 8);
+
+        if (email) {
+            if ((await Vendor.findOne({
+                email: email
+            }))) {
+                return res.status(400).json({
+                    error: true,
+                    code: 114,
+                    message: 'O e-mail escolhido já está sendo utilizado'
+                });
+            }
+            data.email = email;
+        }
+
+        const passCheck = await Vendor.findOne({ _id: _id });
+        if (!(await bcrypt.compare(oldpassword, passCheck.password))) {
+            return res.status(403).json({
+                error: true,
+                code: 115,
+                message: 'Senha antiga incorreta'
+            });
+        } else {
+            await Vendor.updateOne({ _id: _id }, data, (err) => {
+                if (err) {
+                    return res.status(400).json({
+                        error: true,
+                        code: 117,
+                        message: `Operação falhou, tente novamente\nErr: ${err}`
+                    });
+                } else {
+                    return res.json({
+                        error: false,
+                        message: 'Perfil editado com sucesso'
+                    });
+                }
+            });
+        }
+
     }
 
     destroy(req, res) {

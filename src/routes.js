@@ -15,7 +15,7 @@ routes.get('/v1/vendor/:id', AuthMiddleware, VendorController.show);
 routes.get('/v1/vendors', AuthMiddleware, VendorController.index);
 routes.post('/v1/vendors', VendorController.store);
 routes.put('/v1/vendors', AuthMiddleware, VendorController.update);
-routes.delete('/v1/vendor/', AuthMiddleware, VendorController.destroy);
+//routes.delete('/v1/vendor/', AuthMiddleware, VendorController.destroy);
 
 routes.get('/v1/goal/:id', AuthMiddleware, MonthlyGoalController.show);
 routes.get('/v1/goals', AuthMiddleware, MonthlyGoalController.index);
