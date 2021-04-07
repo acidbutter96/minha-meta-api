@@ -1,7 +1,6 @@
 import MonthlyGoal from '../models/MonthlyGoal';
 
 import * as Yup from 'yup';
-import bcrypt from 'bcryptjs';
 
 class MonthlyGoalController {
     async show(req, res) {

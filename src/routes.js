@@ -21,7 +21,7 @@ routes.get('/v1/goal/:id', AuthMiddleware, MonthlyGoalController.show);
 routes.get('/v1/goals', AuthMiddleware, MonthlyGoalController.index);
 routes.post('/v1/goals', MonthlyGoalController.store);
 routes.put('/v1/goals', AuthMiddleware, MonthlyGoalController.update);
-routes.delete('/v1/goal/', AuthMiddleware, MonthlyGoalController.destroy);
+//routes.delete('/v1/goal/', AuthMiddleware, MonthlyGoalController.destroy);
 
 routes.get('/v1/sale/:id', AuthMiddleware, MonthlySaleController.show);
 routes.get('/v1/sales', AuthMiddleware, MonthlySaleController.index);
